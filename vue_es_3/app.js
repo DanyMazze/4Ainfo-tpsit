@@ -16,34 +16,31 @@ createApp({
             mostra_messaggio: false,
             messaggio_errore: 'il nome utente deve essere più lungo di 5 caratteri',
             risposta: '',
-            salvataggio: '',        // aggiunto: bind della textarea
-            saveTimeout: null,      // aggiunto: id del timeout per cancellare precedenti
+            salvataggio: '',       
+            saveTimeout: null,      
         }
     },
     watch: { 
-        username(nuovousername, vecchiousername) {
+        username(nuovousername) {
             if (nuovousername && nuovousername.length < 5) { 
                 this.mostra_messaggio = true;
             } else {
                 this.mostra_messaggio = false;
             }
         },
-        salvataggio(nuovosalvataggio, vecchiosalvataggio) {
+        salvataggio() {
             this.getRisposta();
         }
     },
     methods: {
         getRisposta() {
-            // mostra immediatamente il messaggio di salvataggio
             this.risposta = 'Sto salvando...';
 
-            // cancella eventuale timeout precedente per evitare sovrapposizioni
             if (this.saveTimeout) {
                 clearTimeout(this.saveTimeout);
                 this.saveTimeout = null;
             }
 
-            // dopo 1 secondo mostra "salvato."
             this.saveTimeout = setTimeout(() => {
                 this.risposta = 'salvato.';
                 this.saveTimeout = null;
