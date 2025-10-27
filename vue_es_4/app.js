@@ -6,8 +6,8 @@ const app = createApp({
             success: false,
             error: false,
             coloreAttivo: '#333333',
-            larghezza: 50,  // valore iniziale minimo consentito
-            lunghezza: 50   // valore iniziale minimo consentito
+            larghezza: 50, 
+            lunghezza: 50   
         }
     },
     methods: {
