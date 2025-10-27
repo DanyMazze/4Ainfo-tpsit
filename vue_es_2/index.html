@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: rgb(255, 0, 208); }
+        .active { background-color: #d4edda; }
+    </style>
+    </head>
+    <body>
+
+    <div id="app">
+        <h2>{{ messaggio }}</h2>
+        <button @click="messaggio = 'Hai cliccato il pulsante'">Cliccami</button>
+
+        <h2 v-if="luceaccesa">La luce è accesa</h2>
+        <h2 v-else>La luce è spenta</h2>
+        <button @click="toggleluce">Accendi/Spegni la luce</button>
+
+        <div class="box">
+            <h2>Convertitore Kg - g</h2>
+            <input type="number" v-model.number="peso_kg" placeholder="Inserisci peso in Kg">
+            <p v-if="peso_kg === 0" class="text-danger">Inserisci un valore (maggiore di 0)</p>
+            <p v-else>Il peso in grammi è: {{ peso_kg * 1000 }} g</p>
+        </div>
+
+        <div class="box">
+            <h2>Form di registrazione</h2>
+            <form @submit.prevent="alert('Registrazione avvenuta con successo!')">
+                <p>nome:</p>
+                <input type="text" v-model="nome" placeholder="Inserisci il nome">
+
+                <p>Genere</p>
+                <input type="radio" id="maschio" value="maschio" v-model="genere">Maschio
+                <input type="radio" id="femmina" value="femmina" v-model="genere">Femmina
+                <input type="radio" id="altro" value="altro" v-model="genere">Altro
+                <br><br>
+                <p>Paese</p>
+                <input type="radio" id="italia" value="italia" v-model="paese">Italia
+                <input type="radio" id="francia" value="francia" v-model="paese">Francia
+                <input type="radio" id="germania" value="germania" v-model="paese">Spagna
+                <p>Riepilogo:</p>
+                <p>Nome: {{ nome }}</p>
+                <p>Genere: {{ genere }}</p>
+                <p>Paese: {{ paese }}</p>
+                
+        </div>
+    </div>
+
+
+        <script src="https://unpkg.com/vue@3" defer></script>
+        <script src="./app.js" defer></script>
+    </body>
+    </html>

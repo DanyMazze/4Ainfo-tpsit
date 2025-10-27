@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: rgb(255, 0, 208); }
+        .active { background-color: #d4edda; }
+    </style>
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="box">
+            <p>scivi la tua età:
+                <input type="number" v-model.number="age">
+            </p>
+            <p> {{maggiorenne()}} </p>
+        </div>
+        <div class="box">
+            <h2>Carrello della spesa</h2>
+            <ul>
+                <li v-for="(prodotto, index) in carrello" :key="index">
+                    {{ prodotto.nome }} - € {{ prodotto.prezzo }}
+                </li>
+            </ul>
+            <p>Totale: € {{ totale() }}</p>
+
+            <div class="box">
+                <h2>Controllo username</h2>
+                <p>inserisci il tuo username:
+                    <input type="text" v-model="username">
+                </p>
+                <p v-if="mostra_messaggio" class="text-danger">{{ messaggio_errore }}</p>
+            </div>
+        <div class="box">
+            <textarea v-model="salvataggio" placeholder="Scrivi qualcosa..."></textarea>
+            <p> {{risposta}} </p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3" defer></script>
+    <script src="./app.js" defer></script>
+    </body>
+    </html>

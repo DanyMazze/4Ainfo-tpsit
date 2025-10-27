@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: rgb(255, 0, 208); }
+        .active { background-color: #d4edda; }
+        .semaroro_giallo { width: 100px; height: 100px; border-radius: 50%; margin: 10px auto; }
+        .semaforo_verde { width: 100px; height: 100px; border-radius: 50%; margin: 10px auto; }
+        .semaforo_rosso { width: 100px; height: 100px; border-radius: 50%; margin: 10px auto; }
+    </style>
+    </head>
+    <body>
+
+    <div id="app">
+
+        <h2 v-if="isLoggedId">Benvenuto utente</h2>
+        <h2 v-else>Effettua il login</h2>
+
+        <h3>Semaforo</h3>
+        <div v-if="semaforo == 'rosso'" :class="'semaforo_rosso'">fermo!</div>
+        <div v-else-if="semaforo == 'giallo'" :class="'semaforo_giallo'">attento!</div>
+        <div v-else-if="semaforo == 'verde'" :class="'semaforo_verde'">puoi passare!</div>
+        <div v-else>semaforo non valido</div>
+        <ol>
+            <li v-for="team in team_sportivi" :key="team">
+                {{ team }}
+            </li>
+        </ol>
+
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Prezzo</th>
+                <th>ID</th>
+            </tr>
+            <tr v-for="prodotto in prodotti" :key="prodotto.id" >
+                <td>{{ prodotto.nome }}</td>
+                <td>{{ prodotto.prezzo }} €</td>
+                <td>{{ prodotto.id }}</td>
+            </tr>
+        </table>
+
+    </div>
+        <script src="https://unpkg.com/vue@3" defer></script>
+        <script src="./app.js" defer></script>
+    </body>
+    </html>

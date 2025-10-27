@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+	   <h2>Input di Testo</h2>
+       <input type="text" v-model="messaggio" placeholder="Scrivi qualcosa...">
+       <p>Stai scrivendo: {{ messaggio }}</p>
+
+       <h2>Textarea</h2>
+       <textarea v-model="descrizione" placeholder="Aggiungi una descrizione"></textarea>
+       <p style="white-space: pre-line;">Descrizione: {{ descrizione }}</p>
+
+       <h2>Checkbox</h2>
+       <input type="checkbox" id="checkbox" v-model="confermato">
+       <label for="checkbox">Confermato: {{ confermato }}</label>
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>

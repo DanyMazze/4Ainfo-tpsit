@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <h2>Contatore con Metodo</h2>
+        <p>Conteggio: {{ contatore }}</p>
+        <button @click="incrementa">Incrementa</button>
+        <button @click="decrementa(2)">Decrementa di 2</button>
+
+        <h2>Mostra un messaggio</h2>
+        <button @click="mostraMessaggio('Ciao a tutti!')">Mostrami un alert</button>
+
+        <h2>Modulo</h2>
+        <form @submit.prevent="inviaModulo">
+            <button type="submit">Invia (non ricarica la pagina)</button>
+        </form>		
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
