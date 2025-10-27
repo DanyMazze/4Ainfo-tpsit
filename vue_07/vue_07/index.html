@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+       <h2>Proprietà Calcolate</h2>
+       <div>
+          <label>Nome:</label>
+          <input v-model="nome">
+       </div>
+       <div>
+          <label>Cognome:</label>
+          <input v-model="cognome">
+       </div>
+       <p>Nome Completo (usando una computed): <b>{{ nomeCompleto }}</b></p>
+       <p>Nome Completo (usando un metodo): <b>{{ getNomeCompleto() }}</b></p>
+
+       <h2>Lista di task</h2>
+       <p>Task completati: {{ taskCompletati.length }}</p>
+       <ul>
+          <li v-for="task in taskCompletati" :key="task.id">{{ task.testo }}</li>
+       </ul>
+   </div>
+
+   <script src="https://unpkg.com/vue@3"></script>
+   <script src="./app.js"></script>
+</body>
+</html>

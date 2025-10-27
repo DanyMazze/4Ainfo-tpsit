@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+        .success { background-color: green; }
+        .error { background-color: red; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <messaggio_benvenuto></messaggio_benvenuto>
+        <h2>Messaggio</h2>
+        <div class="box" :class="{ 'success': success, 'error': error }">
+            Ciaooo
+        </div>
+        <button @click="messaggio_success()">imposta come successo</button>
+        <button @click="messaggio_error()">imposta come errore</button>
+
+        <h2>avatar</h2>
+        <input type="color" v-model="coloreAttivo">
+        <input type="range" min="30" max="100" v-model.number="larghezza">
+        <input type="range" min="50" max="100" v-model.number="lunghezza">
+        <div class="box" :style="{ 'background-color': coloreAttivo,  width: lunghezza + 'px', height: larghezza + 'px' }">
+            Avatar
+        </div>
+        
+        <info_card></info_card>
+
+        <messaggio_benvenuto></messaggio_benvenuto>
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
