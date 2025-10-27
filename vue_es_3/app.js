@@ -59,7 +59,10 @@ createApp({
             }
         },
         totale (){
-            return this.carrello.reduce((sum, p) => sum + p.prezzo, 0);
+            let somma = 0;
+            for (let i = 0; i < this.carrello.length; i++) {
+                somma += this.carrello[i].prezzo;
+            }
         }
     }
 }).mount('#app');
