@@ -43,7 +43,7 @@ app.component('info_card', {
         }
     },
     template: `
-        <div class="box">
+        <div cla ss="box">
             <h3>{{ titolo }}</h3>
             <p>{{ contenuto }}</p>
         </div>
