@@ -1,0 +1,62 @@
+  <% 
+  if(somma!=null)
+  { 
+     Object.keys(somma).forEach(key => {
+        console.log(key, somma[key]);
+        if(key.substr(0,1)=="z") {
+           a=somma[key];
+        }
+     });
+  }
+  else  
+  { 
+     a="";
+  } %>
+
+ <html>
+ <head>
+  <meta charset="UTF-8">
+  <title>Operazioni</title>
+  <style type="TEXT/CSS">
+  body { 
+     background-color:rgb(255,255,200); 
+  }
+  .testo { 
+     background-color:rgb(255,255,255); 
+     color:rgb(0,0,255); 
+     width:40px;
+     height:30px;
+     text-align:right;
+     font-size:20px;
+  }
+  .bottone { 
+     background-color:rgb(200,200,200); 
+     color:rgb(255,0,0); 
+     width:100px;
+     height:30px;
+     text-align:center;
+     font-size:20px;
+  }
+  .etic { 
+     text-align:right;
+     font-size:20px;
+  }
+</style> 
+</head>
+  
+<body>
+    <h1><%= topicHead %></h1>
+  <!--
+    <form name="form1" method="POST" enctype="application/x-www-form-urlencoded" action="/somma">
+  -->
+      <form name="form1" method="POST" action="/somma">
+       <label class="etic">a: </label>
+       <input class="testo" type="text" name="a" value="<%= a %>">
+       <br> <br>
+       <% for(i=0;i<5;i++) { %>
+         <input class="bottone" style="width:50px;" name="z<%= i %>" type="submit" value="b<%= i %>" >
+       <% } %>
+    </form> 
+</body>
+</html>
+

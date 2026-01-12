@@ -1,0 +1,48 @@
+
+<%
+function iterate(obj) {
+        level=0;
+        for (var property in obj) {
+            if (obj.hasOwnProperty(property)) {
+
+                if (typeof obj[property] == "object") {
+				%>
+				    <tr>
+					<td> <%= property %> </td> 
+				    </tr>
+					                <%
+                    iterate(obj[property]);
+                } else { 
+				%>
+
+				    <tr>
+				    <td> <%= property %> </td><td> <%= obj[property] %> </td>
+				    </tr>
+                <%
+				}
+
+            }
+        }
+    }
+%> 
+
+<html>
+<body>
+    <h1><%= topicHead %></h1>
+    <form name="form1" method="POST" action="/leggi">
+    Nome file JSON:&nbsp<input type="text" name="fname" >
+    <input type="submit" value="leggi" >
+    </form>
+	<br>
+    <table border='1'>	
+	
+    <%
+	if(filejson!=null){     
+       iterate(filejson);
+    } 
+	%>	
+	
+	</table>
+</body>
+</html>
+

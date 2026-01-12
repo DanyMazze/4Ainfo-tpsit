@@ -1,0 +1,32 @@
+[
+   {
+      "origin":"London",
+      "destination":"Paris",
+      "passengers": 
+      [
+         {"name":"Mr. Sherlock Holmes","age":34},
+         {"name":"Mr. John H. Watson","age":32}
+      ],
+      "travelDate":"17-Dec-2010"
+   },
+   {
+      "origin":"Delhi",
+      "destination":"London",
+      "passengers":
+      [
+         {"name":"Mr. Albert Einstein","age":51},
+         {"name":"Mr. Isaac Newton","age":43}
+      ],
+      "travelDate":"25-Jan-2011"
+    },
+    {
+       "origin":"Delhi",
+       "destination":"London",
+       "passengers":
+       [
+          {"name":"Prof. John Moriaty","age":44},
+          {"name":"Miss Irene Adler","age":28}
+       ],
+       "travelDate":"30-Mar-2011"
+    }
+]

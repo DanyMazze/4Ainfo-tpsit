@@ -1,0 +1,5 @@
+La somma di 5 e 7 è 12<br><br>
+La somma di 7 e 2 è 9<br><br>
+La somma di 5 e 6 è 11<br><br>
+La somma di 5 e 5 è 10<br><br>
+La somma di 6 e 1 è 7<br><br>
