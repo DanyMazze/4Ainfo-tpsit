@@ -7,7 +7,7 @@ var server = http.createServer(function(req, res) {
     
     res.writeHead(200, {"Content-Type": "text/plain"});
     if (page == '/') {
-        res.write('se vuoi un proverbio visita /floor/1/proverbi, se vuoi un biscotto della fortuna visita /cookie');
+        res.write('se vuoi un proverbio visita /proverbi, se vuoi un biscotto della fortuna visita /cookie');
     } 
     else if (page == '/cookie') {
         let cookies = [
