@@ -1,72 +1,173 @@
-// Riscrivere l'esercizio su cookies e proverbi usando Express, 
-// con in più la possibilità di avere una statistica su quante estrazioni casuali sono state fatte
-//  per ciascuna frase e la possibilità di esportare gli elenchi in JSON.
+
+const {readFileSync,writeFileSync,appendFileSync}=require('fs');
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 var express = require('express');
-var app = express(); // create an instance of express (server)
-// npm i express --> to install express module on terminal
-let cookie_estractions = 0;
-let proverbio_estractions = 0;
+var app = express();
+
+const frasiBiscottoFortuna = [
+  {
+    testo: "Un piccolo cambiamento oggi porterà grandi risultati domani.",
+    usi: 0
+  },
+  {
+    testo: "La pazienza è la chiave che apre tutte le porte.",
+    usi: 0
+  },
+  {
+    testo: "Un incontro inaspettato illuminerà la tua giornata.",
+    usi: 0
+  },
+  {
+    testo: "Segui il tuo istinto: conosce la strada.",
+    usi: 0
+  },
+  {
+    testo: "La fortuna favorisce chi osa.",
+    usi: 0
+  },
+  {
+    testo: "Un sorriso sincero tornerà indietro moltiplicato.",
+    usi: 0
+  },
+  {
+    testo: "Presto riceverai una buona notizia.",
+    usi: 0
+  },
+  {
+    testo: "Ogni viaggio inizia con un solo passo.",
+    usi: 0
+  },
+  {
+    testo: "La tua creatività sta per essere premiata.",
+    usi: 0
+  },
+  {
+    testo: "Ascolta più di quanto parli: imparerai molto.",
+    usi: 0
+  },
+  {
+    testo: "Un desiderio espresso in silenzio sta per avverarsi.",
+    usi: 0
+  },
+  {
+    testo: "La felicità si trova nelle cose semplici.",
+    usi: 0
+  },
+  {
+    testo: "Un vecchio problema troverà finalmente soluzione.",
+    usi: 0
+  },
+  {
+    testo: "Fidati di chi dimostra, non solo di chi promette.",
+    usi: 0
+  },
+  {
+    testo: "La tua gentilezza farà la differenza oggi.",
+    usi: 0
+  },
+  {
+    testo: "Nuove opportunità nasceranno da una scelta coraggiosa.",
+    usi: 0
+  },
+  {
+    testo: "Il momento giusto è più vicino di quanto pensi.",
+    usi: 0
+  },
+  {
+    testo: "Lascia andare ciò che non ti serve più.",
+    usi: 0
+  },
+  {
+    testo: "La fortuna ti sta osservando: sii pronto.",
+    usi: 0
+  },
+  {
+    testo: "Oggi è un buon giorno per credere in te stesso.",
+    usi: 0
+  }
+];
+
+const proverbiItaliani = [
+  { testo: "Chi dorme non piglia pesci.", usi: 0 },
+  { testo: "Meglio tardi che mai.", usi: 0 },
+  { testo: "Il lupo perde il pelo ma non il vizio.", usi: 0 },
+  { testo: "Non è tutto oro quel che luccica.", usi: 0 },
+  { testo: "Tra il dire e il fare c’è di mezzo il mare.", usi: 0 },
+  { testo: "Ride bene chi ride ultimo.", usi: 0 },
+  { testo: "A caval donato non si guarda in bocca.", usi: 0 },
+  { testo: "Chi va piano va sano e va lontano.", usi: 0 },
+  { testo: "L’abito non fa il monaco.", usi: 0 },
+  { testo: "Prevenire è meglio che curare.", usi: 0 },
+  { testo: "Gallina vecchia fa buon brodo.", usi: 0 },
+  { testo: "Chi troppo vuole nulla stringe.", usi: 0 },
+  { testo: "Il mattino ha l’oro in bocca.", usi: 0 },
+  { testo: "Meglio soli che male accompagnati.", usi: 0 },
+  { testo: "Tanto va la gatta al lardo che ci lascia lo zampino.", usi: 0 },
+  { testo: "Volere è potere.", usi: 0 },
+  { testo: "Paese che vai, usanza che trovi.", usi: 0 },
+  { testo: "Sbagliando s’impara.", usi: 0 },
+  { testo: "Il gioco non vale la candela.", usi: 0 },
+  { testo: "Chi di speranza vive, disperato muore.", usi: 0 }
+];
+
 app.get('/',function(req,res){
-    res.send('Benvenuto al server di cookies e proverbi! Usa /cookies per un cookie casuale e /proverbi per un proverbio casuale.');
+   res.send('devi fornirmi un sottoindirizzo');
+   console.log('indirizzo sbagliato');
+});  
+ 
+app.get('/cookie',function(req,res){
+   const numeroCasuale = randomInt(0, 19); 
+   res.send(frasiBiscottoFortuna[numeroCasuale].testo);
+   frasiBiscottoFortuna[numeroCasuale].usi++;
+   console.log('estratto cookie '+frasiBiscottoFortuna[numeroCasuale].testo);
+});   
+app.get('/esporta_cookie',function(req,res){
+	writeFileSync('./cookie,json',JSON.stringify(frasiBiscottoFortuna, null, 2));
+    res.send("ho esportato i cookie");
+    console.log("ho esportato i cookie");
 });
+app.get('/conta_cookie',function(req,res){
+   let testo = "";
+   for (let i = 0; i < frasiBiscottoFortuna.length; i++) {
+      testo += frasiBiscottoFortuna[i].testo + " — usi: " + frasiBiscottoFortuna[i].usi + "<br>";
+   }
+   res.send(testo);
+   console.log('ho contato i cookie');
+});   
 
-
-app.get('/cookies', function(req, res) {
-        let cookies = [
-            "La pazienza è la virtù dei forti.",
-            "Un viaggio di mille miglia inizia con un solo passo.",
-            "La felicità non è una destinazione, ma un modo di viaggiare.",
-            "Il successo è la somma di piccoli sforzi ripetuti giorno dopo giorno.",
-            "Non aspettare il momento perfetto, cogli l'attimo e rendilo perfetto.",
-            "La vita è come una bicicletta: per mantenere l'equilibrio devi muoverti.",
-            "Ogni giorno è una nuova opportunità per cambiare la tua vita.",
-            "La gentilezza è la lingua che i sordi possono sentire e i ciechi possono vedere.",
-            "Non smettere mai di imparare, perché la vita non smette mai di insegnare.",
-            "Il coraggio non è l'assenza di paura, ma la conquista di essa.",
-            "Sii il cambiamento che vuoi vedere nel mondo.",
-            "La creatività è l'intelligenza che si diverte.",
-            "Non contare i giorni, fai in modo che i giorni contino.",
-            "La vera ricchezza non si misura in denaro, ma in momenti felici.",
-            "Il fallimento è solo l'opportunità di ricominciare in modo più intelligente.",
-            "La vita è breve, sorridi finché hai i denti.",
-            "Non lasciare che ieri occupi troppo di oggi.",
-            "Il futuro appartiene a coloro che credono nella bellezza dei propri sogni.",
-            "La gratitudine trasforma ciò che abbiamo in abbastanza.",
-            "Ogni ostacolo è un'opportunità travestita."
-        ];
-        let randomIndex = Math.floor(Math.random() * cookies.length);
-        cookie_estractions++;
-        res.send(`Cookie estratto: ${cookies[randomIndex]}<br>Statistiche di estrazione:<br>Cookies estratti: ${cookie_estractions-(cookie_estractions / 2)}`);
+app.get('/proverbi',function(req,res){
+   const numeroCasuale = randomInt(0, 19); 
+   res.send(proverbiItaliani[numeroCasuale].testo);
+   proverbiItaliani[numeroCasuale].usi++;
+   console.log('estratto proverbi '+proverbiItaliani[numeroCasuale].testo);
+});   
+app.get('/esporta_proverbi',function(req,res){
+   let testo = "";
+   for (let i = 0; i < proverbiItaliani.length; i++) {
+      testo += proverbiItaliani[i].testo + " — usi: " + proverbiItaliani[i].usi + "\n";
+   }
+   writeFileSync('./proverbi.txt',testo);
+   res.send("ho esportato i proverbi");
+   console.log("ho esportato i proverbi");
 });
-app.get('/proverbi', function(req, res) {
-        let proverbi = [
-            "Chi dorme non piglia pesci.",
-            "Meglio un uovo oggi che una gallina domani.",
-            "Tra il dire e il fare c'è di mezzo il mare.",
-            "Non è tutto oro quel che luccica.",
-            "Chi va piano va sano e va lontano.",
-            "L'abito non fa il monaco.",
-            "Chi trova un amico trova un tesoro.",
-            "Ride bene chi ride ultimo.",
-            "Tutte le strade portano a Roma.",
-            "La gatta frettolosa ha fatto i gattini ciechi.",
-            "Non si può avere la botte piena e la moglie ubriaca.",
-            "A caval donato non si guarda in bocca.",
-            "Il mattino ha l'oro in bocca.",
-            "Chi semina vento raccoglie tempesta.",
-            "Lontano dagli occhi, lontano dal cuore.",
-            "Non c'è due senza tre.",
-            "Meglio soli che male accompagnati.",
-            "La fortuna aiuta gli audaci.",
-            "Chi ben comincia è a metà dell'opera.",
-            "Occhio per occhio, dente per dente."
-        ];
-        let randomIndex = Math.floor(Math.random() * proverbi.length);
-        proverbio_estractions++;
-        res.send(`Proverbio estratto: ${proverbi[randomIndex]}<br>Statistiche di estrazione:<br>Proverbi estratti: ${proverbio_estractions -(proverbio_estractions / 2)}`);
-});
+app.get('/conta_proverbi',function(req,res){
+   let testo = "";
+   for (let i = 0; i < proverbiItaliani.length; i++) {
+      testo += proverbiItaliani[i].testo + " — usi: " + proverbiItaliani[i].usi + "<br>";
+   }
+   res.send(testo);
+   console.log('ho contato i proverbi');
+});   
 
-    app.listen(3000,function(){
-    console.log('server running on port 3000');
+app.use(function (req, res) {
+  res.status(404).send('404 - Indirizzo inesistente');
+  console.log('Tentativo di accesso a indirizzo inesistente:', req.originalUrl);
+});
+ 
+app.listen(3000,function(){
+   console.log('server running on port 3000');
 })
