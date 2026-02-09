@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Demo Routing Express</title>
+    <title>Rubrica telefonica</title>
     <style>
         body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
         .box { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
@@ -10,25 +10,24 @@
     </style>
 </head>
 <body>
-    <h1>Express Routing Lab</h1>
+    <h1>Rubrica Telefonica</h1>
 
     <div class="box">
-        <h3>1. Rotta Semplice</h3>
-        <button onclick="chiamaApi('/api/info')">Verifica Info</button>
-    </div>
+        <h3>Benvenuto</h3>
+        <p>Qui potrai vedere i tuoi contatti e aggiungerne di nuovi.</p>
 
-    <div class="box">
-        <h3>2. Rotta Dinamica (ID: 42)</h3>
-        <button onclick="chiamaApi('/api/prodotti/42')">Carica Prodotto 42</button>
-    </div>
-    
-    <div class="box">
-        <h3>4. Rotta non esistente (404)</h3>
-        <button onclick="chiamaApi('/percorso/sbagliato')">Genera Errore</button>
-    </div>
+        <div class="box">
+            <h3>I tuoi contatti</h3>
+            <p id="output" onload="caricaContatti()"></p>
+        </div>
 
-    
-    <pre id="output">Clicca un bottone per vedere i risultati...</pre>
+        <div>
+            <h3>Aggiungi un contatto</h3>
+            <input type="text" placeholder="Nome">
+            <input type="text" placeholder="Numero di telefono">
+            <button onclick="chiamaApi('/api/aggiungi')">Aggiungi</button>
+        </div>
+    </div>
 
     <script>
         async function chiamaApi(percorso) {
@@ -36,13 +35,23 @@
             try {
                 const res = await fetch(percorso);
                 
-                // Gestione manuale del 404 per il frontend
                 if (!res.ok) {
                     const text = await res.text();
                     out.innerText = `Errore ${res.status}: ${text}`;
                     return;
                 }
-                
+
+                const data = await res.json();
+                out.innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                out.innerText = "Errore di connessione al server.";
+            }
+        }
+
+        async function caricaContatti() {
+            const out = document.getElementById('output');
+            try {
+                const res = await fetch('/api/contatti');
                 const data = await res.json();
                 out.innerText = JSON.stringify(data, null, 2);
             } catch (err) {
@@ -52,3 +61,4 @@
     </script>
 </body>
 </html>
+
