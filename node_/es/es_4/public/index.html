@@ -16,48 +16,9 @@
         <h3>Benvenuto</h3>
         <p>Qui potrai vedere i tuoi contatti e aggiungerne di nuovi.</p>
 
-        <div class="box">
-            <h3>I tuoi contatti</h3>
-            <p id="output" onload="caricaContatti()"></p>
-        </div>
-
-        <div>
-            <h3>Aggiungi un contatto</h3>
-            <input type="text" placeholder="Nome">
-            <input type="text" placeholder="Numero di telefono">
-            <button onclick="chiamaApi('/api/aggiungi')">Aggiungi</button>
-        </div>
-    </div>
-
+        
     <script>
-        async function chiamaApi(percorso) {
-            const out = document.getElementById('output');
-            try {
-                const res = await fetch(percorso);
-                
-                if (!res.ok) {
-                    const text = await res.text();
-                    out.innerText = `Errore ${res.status}: ${text}`;
-                    return;
-                }
-
-                const data = await res.json();
-                out.innerText = JSON.stringify(data, null, 2);
-            } catch (err) {
-                out.innerText = "Errore di connessione al server.";
-            }
-        }
-
-        async function caricaContatti() {
-            const out = document.getElementById('output');
-            try {
-                const res = await fetch('/api/contatti');
-                const data = await res.json();
-                out.innerText = JSON.stringify(data, null, 2);
-            } catch (err) {
-                out.innerText = "Errore di connessione al server.";
-            }
-        }
+        
     </script>
 </body>
 </html>

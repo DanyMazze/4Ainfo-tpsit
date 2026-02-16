@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 3000;
-const {readFileSync,writeFileSync,appendFileSync}=require('fs');
+const {readFileSync,writeFileSync}=require('fs');
 
 
 // Middleware per processare i dati JSON inviati nei POST
@@ -13,45 +13,57 @@ app.use(express.json());
 // Se vai su http://localhost:3000/ vedrai index.html in automatico
 app.use(express.static('public'));
 
-app.post('/api/aggiungi', (req, res) => {
-    const dati = req.body;
-    console.log("Dati ricevuti:", dati);
-    const file = 'contatti.json';
-    try {
-        let contenuto = '';
-        try {
-            contenuto = readFileSync(file, 'utf-8');
-        } catch (e) {
-            // file potrebbe non esistere ancora
-            contenuto = '';
-        }
+app.post('/api/rubrica', (req, res) => {
+    // 1. Leggiamo il testo dal file e lo trasformiamo in array
+    const datiFile = readFileSync('rubrica.json', 'utf8');
+    const rubricaArray = JSON.parse(datiFile);
 
-        let lista = [];
-        if (contenuto) {
-            try {
-                lista = JSON.parse(contenuto);
-                if (!Array.isArray(lista)) lista = [];
-            } catch (e) {
-                // fallback: file in formato NDJSON (una riga JSON per contatto)
-                lista = [];
-                for (const line of contenuto.split(/\r?\n/)) {
-                    const l = line.trim();
-                    if (!l) continue;
-                    try {
-                        lista.push(JSON.parse(l));
-                    } catch (e) {
-                        // ignora righe non-JSON
-                    }
-                }
-            }
-        }
+    // 2. Aggiungiamo il nuovo contatto ricevuto dal Client (es. tramite un form)
+    const nuovoContatto = req.body;
+    rubricaArray.push(nuovoContatto);
 
-        lista.push(dati);
-        writeFileSync(file, JSON.stringify(lista, null, 2), 'utf-8');
-        res.status(200).json({ message: 'Contatto aggiunto', dati });
-    } catch (err) {
-        console.error('Errore salvataggio contatto:', err);
-        res.status(500).json({ error: 'Errore salvataggio contatto' });
+    // 3. Ritrasformiamo l'array in testo e sovrascriviamo l'intero file
+    writeFileSync('rubrica.json', JSON.stringify(rubricaArray));
+
+    // Diamo conferma al Client
+    res.json({ messaggio: "Contatto aggiunto con successo!" });
+});
+
+app.delete('/api/rubrica/:id', (req, res) => {
+    // 1. Leggiamo e decodifichiamo il file
+    const datiFile = readFileSync('rubrica.json', 'utf8');
+    let rubricaArray = JSON.parse(datiFile);
+
+    // 2. Leggiamo l'ID da cancellare direttamente dal link (es. /api/rubrica/3)
+    const idDaCancellare = Number(req.params.id);
+
+    // 3. Il colino in azione! Teniamo solo chi NON ha quell'ID
+    rubricaArray = rubricaArray.filter(contatto => contatto.id !== idDaCancellare);
+
+    // 4. Sovrascriviamo il file con l'array aggiornato
+    writeFileSync('rubrica.json', JSON.stringify(rubricaArray));
+
+    res.json({ messaggio: "Contatto eliminato con successo!" });
+});
+
+app.put('/api/rubrica/:id', (req, res) => {
+    const datiFile = readFileSync('rubrica.json', 'utf8');
+    let rubricaArray = JSON.parse(datiFile);
+
+    const idDaModificare = Number(req.params.id);
+    
+    // 1. Troviamo dove si trova il contatto
+    const indice = rubricaArray.findIndex(c => c.id === idDaModificare);
+
+    if (indice !== -1) {
+        // 2. Aggiorniamo i dati mantenendo lo stesso ID
+        rubricaArray[indice] = { id: idDaModificare, ...req.body };
+
+        // 3. Salviamo su file
+        writeFileSync('rubrica.json', JSON.stringify(rubricaArray, null, 2));
+        res.json({ messaggio: "Contatto aggiornato!" });
+    } else {
+        res.status(404).json({ messaggio: "Contatto non trovato" });
     }
 });
 
