@@ -1,24 +1,63 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Rubrica telefonica</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
-        .box { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
-        button { cursor: pointer; background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 3px; }
+
     </style>
 </head>
 <body>
     <h1>Rubrica Telefonica</h1>
 
-    <div class="box">
-        <h3>Benvenuto</h3>
-        <p>Qui potrai vedere i tuoi contatti e aggiungerne di nuovi.</p>
-
+    <div>
+        <div>
+            <h3>Benvenuto</h3>
+            <p>Qui potrai vedere i tuoi contatti e aggiungerne di nuovi.</p>
+            <form id="formContatti">
+            <input type="text" id="nome" placeholder="Nome" required>
+            <input type="text" id="cognome" placeholder="Cognome" required>
+            <input type="text" id="telefono" placeholder="Telefono" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="submit" onclick="AggiungiContatto()">Aggiungi Contatto</button>
+        </form>
+        </div>
+        <div id="contatti">
+            
+        </div>
+    </div>
         
     <script>
-        
+        async function AggiungiContatto() {
+            const infoContatto = {
+                nome: document.getElementById('nome').value,
+                cognome: document.getElementById('cognome').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value
+            };
+            const res = await fetch('/api/rubrica', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(infoContatto)
+            });
+            const data = await res.json();
+        }
+
+        function creaCardContatto(contatto) {
+            const card = document.createElement('div');
+            card.classList.add('card-contatto');
+
+            card.innerHTML = `
+                <h3>${contatto.nome} ${contatto.cognome}</h3>
+                <p><strong>Telefono:</strong> ${contatto.telefono}</p>
+                <p><strong>Email:</strong> ${contatto.email}</p>
+                <button class="btn-modifica">Modifica</button>
+                <button class="btn-elimina">Elimina</button>
+            `;
+            return card;
+        }
+                
     </script>
 </body>
 </html>
