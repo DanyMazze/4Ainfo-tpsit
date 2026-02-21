@@ -44,6 +44,36 @@
             const data = await res.json();
         }
 
+        function CaricaContatti() {
+            fetch('/api/rubrica')
+                .then(response => response.json())
+                .then(contatti => {
+                    const contattiContainer = document.getElementById('contatti');
+                    contattiContainer.innerHTML = '';
+                    contatti.forEach(contatto => {
+                        const card = creaCardContatto(contatto);
+                        contattiContainer.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Errore:', error));
+        }
+
+        async function modificacontatto(id) {
+            const infoContatto = {
+                id: id,
+                nome: document.getElementById('nome').value,
+                cognome: document.getElementById('cognome').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value
+            };
+            const res = await fetch('/api/rubrica/modifica', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(infoContatto)
+            });
+            const data = await res.json();
+        }
+
         function creaCardContatto(contatto) {
             const card = document.createElement('div');
             card.classList.add('card-contatto');
@@ -52,8 +82,8 @@
                 <h3>${contatto.nome} ${contatto.cognome}</h3>
                 <p><strong>Telefono:</strong> ${contatto.telefono}</p>
                 <p><strong>Email:</strong> ${contatto.email}</p>
-                <button class="btn-modifica">Modifica</button>
-                <button class="btn-elimina">Elimina</button>
+                <button onclick="ModificaContatto('${contatto.id}')">Modifica</button>
+                <button onclick="EliminaContatto('${contatto.id}')">Elimina</button>
             `;
             return card;
         }
