@@ -1,17 +1,16 @@
+
 const express = require('express');
-const path = require('path');
 const app = express();
 const PORT = 3000;
-const {readFileSync,writeFileSync}=require('fs');
-
-// Gestire una rubrica contenente per ciascun nominativo: nome, cognome, telefono, e-mail e un ID univoco;
-//deve essere possibile inserire, modificare, cancellare, visualizzare.
-//I dati dovranno essere letti e scritti su file JSON.
-
-
+const { readFileSync, writeFileSync } = require('fs');
 
 app.use(express.json());
 app.use(express.static('public'));
+
+app.get('/api/rubrica', (req, res) => {
+    const contatti = JSON.parse(readFileSync('rubrica.json', 'utf-8'));
+    res.json(contatti);
+});
 
 app.post('/api/rubrica', (req, res) => {
     const { nome, cognome, telefono, email } = req.body;
@@ -21,15 +20,15 @@ app.post('/api/rubrica', (req, res) => {
 
     const contatti = JSON.parse(readFileSync('rubrica.json', 'utf-8'));
 
-    const ID  = contatti.length > 0 ? contatti[contatti.length - 1].ID + 1 : 1;
+    const id = contatti.length > 0 ? contatti[contatti.length - 1].id + 1 : 1;
 
-    const nuovoContatto = { id: ID, nome, cognome, telefono, email };
+    const nuovoContatto = { id, nome, cognome, telefono, email };
     contatti.push(nuovoContatto);
     writeFileSync('rubrica.json', JSON.stringify(contatti, null, 2));
     res.status(201).json(nuovoContatto);
 });
 
-app.post('api/rubrica/modifica', (req, res) => {
+app.post('/api/rubrica/modifica', (req, res) => {
     const { id, nome, cognome, telefono, email } = req.body;
     if (!id || !nome || !cognome || !telefono || !email) {
         return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
@@ -51,7 +50,7 @@ app.post('/api/rubrica/cancella', (req, res) => {
     if (!id) {
         return res.status(400).json({ error: 'ID è obbligatorio' });
     }
-    
+
     const contatti = JSON.parse(readFileSync('rubrica.json', 'utf-8'));
     const contattoIndex = contatti.findIndex(c => c.id === id);
     if (contattoIndex === -1) {
@@ -70,5 +69,3 @@ app.use((req, res) => {
 app.listen(PORT, () => {
     console.log(`Server in esecuzione su http://localhost:${PORT}`);
 });
-
-

@@ -1,11 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Rubrica telefonica</title>
     <style>
-
+        .card-contatto {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -15,33 +19,43 @@
         <div>
             <h3>Benvenuto</h3>
             <p>Qui potrai vedere i tuoi contatti e aggiungerne di nuovi.</p>
-            <form id="formContatti">
-            <input type="text" id="nome" placeholder="Nome" required>
-            <input type="text" id="cognome" placeholder="Cognome" required>
-            <input type="text" id="telefono" placeholder="Telefono" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <button type="submit" onclick="AggiungiContatto()">Aggiungi Contatto</button>
-        </form>
+            <form id="formContatti" onsubmit="AggiungiContatto(event)">
+                <input type="text" id="nome" placeholder="Nome" required>
+                <input type="text" id="cognome" placeholder="Cognome" required>
+                <input type="text" id="telefono" placeholder="Telefono" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <button type="submit">Aggiungi Contatto</button>
+            </form>
         </div>
-        <div id="contatti">
-            
-        </div>
+        <div id="contatti"></div>
     </div>
-        
+
     <script>
-        async function AggiungiContatto() {
+        CaricaContatti();
+
+        async function AggiungiContatto(event) {
+            event.preventDefault();
+
             const infoContatto = {
                 nome: document.getElementById('nome').value,
                 cognome: document.getElementById('cognome').value,
                 telefono: document.getElementById('telefono').value,
                 email: document.getElementById('email').value
             };
+
             const res = await fetch('/api/rubrica', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(infoContatto)
             });
-            const data = await res.json();
+
+            if (res.ok) {
+                document.getElementById('formContatti').reset();
+                CaricaContatti();
+            } else {
+                const errore = await res.json();
+                alert('Errore: ' + errore.error);
+            }
         }
 
         function CaricaContatti() {
@@ -58,20 +72,54 @@
                 .catch(error => console.error('Errore:', error));
         }
 
-        async function modificacontatto(id) {
+        async function ModificaContatto(id) {
+            const nuovoNome = prompt('Nuovo nome:');
+            const nuovoCognome = prompt('Nuovo cognome:');
+            const nuovoTelefono = prompt('Nuovo telefono:');
+            const nuovaEmail = prompt('Nuova email:');
+
+            if (!nuovoNome || !nuovoCognome || !nuovoTelefono || !nuovaEmail) {
+                alert('Tutti i campi sono obbligatori');
+                return;
+            }
+
             const infoContatto = {
                 id: id,
-                nome: document.getElementById('nome').value,
-                cognome: document.getElementById('cognome').value,
-                telefono: document.getElementById('telefono').value,
-                email: document.getElementById('email').value
+                nome: nuovoNome,
+                cognome: nuovoCognome,
+                telefono: nuovoTelefono,
+                email: nuovaEmail
             };
+
             const res = await fetch('/api/rubrica/modifica', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(infoContatto)
             });
-            const data = await res.json();
+
+            if (res.ok) {
+                CaricaContatti();
+            } else {
+                const errore = await res.json();
+                alert('Errore: ' + errore.error);
+            }
+        }
+
+        async function EliminaContatto(id) {
+            if (!confirm('Sei sicuro di voler eliminare questo contatto?')) return;
+
+            const res = await fetch('/api/rubrica/cancella', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+
+            if (res.ok) {
+                CaricaContatti();
+            } else {
+                const errore = await res.json();
+                alert('Errore: ' + errore.error);
+            }
         }
 
         function creaCardContatto(contatto) {
@@ -82,13 +130,11 @@
                 <h3>${contatto.nome} ${contatto.cognome}</h3>
                 <p><strong>Telefono:</strong> ${contatto.telefono}</p>
                 <p><strong>Email:</strong> ${contatto.email}</p>
-                <button onclick="ModificaContatto('${contatto.id}')">Modifica</button>
-                <button onclick="EliminaContatto('${contatto.id}')">Elimina</button>
+                <button onclick="ModificaContatto(${contatto.id})">Modifica</button>
+                <button onclick="EliminaContatto(${contatto.id})">Elimina</button>
             `;
             return card;
         }
-                
     </script>
 </body>
 </html>
-
