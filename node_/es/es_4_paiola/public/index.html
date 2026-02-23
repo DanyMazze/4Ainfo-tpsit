@@ -32,7 +32,7 @@
     <pre id="output"></pre>
 
     <script>
-       async function chiamaApi(percorso) {
+        async function chiamaApi(percorso) {
             const out = document.getElementById('output');
             try {
                 const res = await fetch(percorso);
@@ -49,49 +49,49 @@
             } catch (err) {
                 out.innerText = "Errore di connessione al server.";
             }
-       }
+        }
         
-       async function inviaDati() {
+        async function inviaDati() {
             const nome = document.getElementById('nome').value;
             const cognome = document.getElementById('cognome').value;
             const telefono = document.getElementById('telefono').value;
             const email = document.getElementById('email').value;
             const out = document.getElementById('output');
-  
-            try {
-               const res = await fetch('/aggiungi', {
-				  method: 'POST', 
-				  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify({ 
-					  nome: nome,
-					  cognome: cognome,
-					  telefono: telefono,
-					  email: email
-                  })
-               });
-               out.innerText = "Inserimento effettuato";
-            } catch (err) {
-               out.innerText = "Errore durante l'invio del feedback.";
-            }
-       }
 
-       async function cancellaDati() {
+            try {
+                const res = await fetch('/aggiungi', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        nome: nome,
+                        cognome: cognome,
+                        telefono: telefono,
+                        email: email
+                    })
+                });
+                out.innerText = "Inserimento effettuato";
+            } catch (err) {
+                out.innerText = "Errore durante l'invio del feedback.";
+            }   
+        }
+
+        async function cancellaDati() {
             const via = document.getElementById('via').value;
             const out = document.getElementById('output');
-  
+
             try {
-               const res = await fetch('/cancella', {
-				  method: 'POST', 
-				  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify({ 
-					  via: via
-                  })
-               });
-               out.innerText = "Cancellazione effettuata";
+                const res = await fetch('/cancella', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        via: via
+                    })
+                });
+                out.innerText = "Cancellazione effettuata";
             } catch (err) {
-               out.innerText = "Errore durante l'invio del feedback.";
+                out.innerText = "Errore durante l'invio del feedback.";
             }
-       }
+        }
 
     </script>
 </body>

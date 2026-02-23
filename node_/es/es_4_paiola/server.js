@@ -12,7 +12,7 @@ app.use(express.static('public'));
 let rubrica = [];
 const file = './rubrica.json';
 if (!existsSync(file)) {
-  writeFileSync(file, JSON.stringify(rubrica, null, 2));
+   writeFileSync(file, JSON.stringify(rubrica, null, 2));
 }
 rubrica = JSON.parse(readFileSync(file, 'utf-8'));
 
@@ -37,10 +37,10 @@ app.post('/cancella', (req, res) => {
 });
 
 app.use((req, res) => {
-    res.status(404).send("<h1>404 - Pagina non trovata</h1>");
+   res.status(404).send("<h1>404 - Pagina non trovata</h1>");
 });
 
 app.listen(PORT, () => {
-    console.log(`Server in esecuzione su http://localhost:${PORT}`);
+   console.log(`Server in esecuzione su http://localhost:${PORT}`);
 });
 
