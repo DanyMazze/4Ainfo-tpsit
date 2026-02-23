@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "marco",
+    "cognome": "paiola",
+    "telefono": "12345",
+    "email": "aaa@tin.it"
+  },
+  {
+    "nome": "mario",
+    "cognome": "bianchi",
+    "telefono": "4564",
+    "email": "mb@tin.it"
+  }
+]

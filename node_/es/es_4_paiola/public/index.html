@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Rubrica</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        .box { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        button { cursor: pointer; background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Rubrica</h1>
+
+    <div class="box">
+        <button onclick="chiamaApi('/vedi')">Visualizza</button>
+    </div>
+    
+    <div class="box">
+        Nome: <input type="text" id="nome" placeholder="nome"><br>
+        cognome: <input type="text" id="cognome" placeholder="cognome"><br>
+        Telefono: <input type="text" id="telefono" placeholder="telefono"><br>
+        E-mail: <input type="text" id="email" placeholder="email"><br>
+        <br><button onclick="inviaDati()">Aggiungi</button>
+    </div>
+
+    <div class="box">
+        Nome da rimuovere: <input type="text" id="via" placeholder="nome"><br>
+        <br><button onclick="cancellaDati()">Cancella</button>
+    </div>
+
+    <pre id="output"></pre>
+
+    <script>
+       async function chiamaApi(percorso) {
+            const out = document.getElementById('output');
+            try {
+                const res = await fetch(percorso);
+                
+                // Gestione manuale del 404 per il frontend
+                if (!res.ok) {
+                    const text = await res.text();
+                    out.innerText = `Errore ${res.status}: ${text}`;
+                    return;
+                }
+
+                const data = await res.json();
+                out.innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                out.innerText = "Errore di connessione al server.";
+            }
+       }
+        
+       async function inviaDati() {
+            const nome = document.getElementById('nome').value;
+            const cognome = document.getElementById('cognome').value;
+            const telefono = document.getElementById('telefono').value;
+            const email = document.getElementById('email').value;
+            const out = document.getElementById('output');
+  
+            try {
+               const res = await fetch('/aggiungi', {
+				  method: 'POST', 
+				  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ 
+					  nome: nome,
+					  cognome: cognome,
+					  telefono: telefono,
+					  email: email
+                  })
+               });
+               out.innerText = "Inserimento effettuato";
+            } catch (err) {
+               out.innerText = "Errore durante l'invio del feedback.";
+            }
+       }
+
+       async function cancellaDati() {
+            const via = document.getElementById('via').value;
+            const out = document.getElementById('output');
+  
+            try {
+               const res = await fetch('/cancella', {
+				  method: 'POST', 
+				  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ 
+					  via: via
+                  })
+               });
+               out.innerText = "Cancellazione effettuata";
+            } catch (err) {
+               out.innerText = "Errore durante l'invio del feedback.";
+            }
+       }
+
+    </script>
+</body>
+</html>
+
