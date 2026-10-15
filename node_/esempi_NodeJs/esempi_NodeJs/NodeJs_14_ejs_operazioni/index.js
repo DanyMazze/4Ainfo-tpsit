@@ -32,7 +32,7 @@ app.post('/somma',function(req,res){
         somma : s,
         topicHead : 'Operazioni'
     });
-     
+
 });
 app.listen(5000,function(){
     console.log('server running on port 5000');
