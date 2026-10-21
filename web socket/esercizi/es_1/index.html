@@ -1,0 +1,33 @@
+<html>
+
+<head>
+  <script>
+    let webSocket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+
+    webSocket.onmessage = (event) => {
+      let pos = parseInt(event.data);
+      for (let i = 0; i < 5; i++) {
+        let el = document.getElementById('q' + i);
+        if (i == pos) {
+          el.bgColor = 'red';
+        } else {
+          el.bgColor = 'yellow';
+        }
+      }
+    };
+  </script>
+</head>
+
+<body>
+  <table cellspacing="10">
+    <tr>
+      <td id="q0" width="50" height="50" bgcolor="yellow"></td>
+      <td id="q1" width="50" height="50" bgcolor="yellow"></td>
+      <td id="q2" width="50" height="50" bgcolor="yellow"></td>
+      <td id="q3" width="50" height="50" bgcolor="yellow"></td>
+      <td id="q4" width="50" height="50" bgcolor="yellow"></td>
+    </tr>
+  </table>
+</body>
+
+</html>
