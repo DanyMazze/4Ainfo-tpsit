@@ -1,0 +1,49 @@
+<html>
+<body>
+</body>
+</html>
+
+<script>
+   zr = 15;
+   zc = 20;
+   zh = 30;
+   zw = 30;
+   for (j = 0; j < zr; j++) {
+      for (i = 0; i < zc; i++) {
+         l = 10 + (i * (zw + 3));
+         t = 10 + (j * (zh + 3));
+         nuovo = document.createElement('div');
+         nuovo.setAttribute('name', 'A');
+         nuovo.style.position = 'absolute';
+         nuovo.style.backgroundColor = 'lightgray';
+         nuovo.style.height = zh;
+         nuovo.style.width = zw;
+         nuovo.style.top = t;
+         nuovo.style.left = l;
+         document.body.appendChild(nuovo);
+      }
+   }
+
+   let webSocket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+
+   webSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const el = document.getElementsByName('A');
+
+      el[data.position.ti].style.backgroundColor = data.position.colore;
+
+      if (data.position.vincitore != '') {
+         alert('Ha vinto la squadra ' + data.position.vincitore);
+      }
+   };
+
+   const d = document.getElementsByName('A');
+   for (i = 0; i < d.length; i++) {
+      (function (index) {
+         d[index].addEventListener("click", function () {
+            let manda = { pos: index };
+            webSocket.send(JSON.stringify({ manda: manda }));
+         });
+      })(i);
+   }
+</script>
